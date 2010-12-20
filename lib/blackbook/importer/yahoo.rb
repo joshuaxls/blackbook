@@ -1,5 +1,4 @@
 require 'blackbook/importer/page_scraper'
-require 'fastercsv'
 
 ##
 # contacts importer for Yahoo!
@@ -46,7 +45,7 @@ class Blackbook::Importer::Yahoo < Blackbook::Importer::PageScraper
     form = page.forms.last
     csv = agent.submit(form, form.buttons[2]) # third button is Yahoo-format CSV
     
-    contact_rows = FasterCSV.parse(csv.body)
+    contact_rows = CSV.parse(csv.body)
     labels = contact_rows.shift # TODO: Actually use the labels to find the indexes of the data we want
     contact_rows.collect do |row|
       next if !row[7].empty? && options[:username] =~ /^#{row[7]}/ # Don't collect self
